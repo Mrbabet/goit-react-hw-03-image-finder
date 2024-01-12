@@ -1,9 +1,19 @@
 import React from "react";
+import ImageGalleryItem from "./ImageGalleryItem";
 
-const ImageGallery = () => {
+const ImageGallery = ({ results }) => {
   return (
     <>
-      <ul class="gallery"></ul>
+      <ul className="gallery">
+        {results.map((result) => {
+          return (
+            <ImageGalleryItem
+              key={result.id}
+              webformatURL={result.webformatURL}
+            />
+          );
+        })}
+      </ul>
     </>
   );
 };
