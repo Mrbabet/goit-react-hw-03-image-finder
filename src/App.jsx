@@ -3,11 +3,17 @@ import "./App.css";
 import Searchbar from "./components/Searchbar";
 import ImageGallery from "./components/ImageGallery";
 import Loader from "./components/Loader";
+import ImageGalleryItem from "./components/ImageGalleryItem";
+import Button from "./components/Button";
 
 function App() {
   const API_KEY = "40190153-1f7ba2f721d69c0d589a95a2c";
   const [results, setResults] = useState([]);
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
+  const [showLoadMore, setShowLoadMore] = useState(false)
+  
+
+  
 
   const fetchData = async function (query) {
     try {
@@ -21,14 +27,24 @@ function App() {
     }
   };
 
+
   const handleSubmit = async (query) => {
     await fetchData(query);
   };
+  
 
   return (
     <>
       <Searchbar onSubmit={handleSubmit} />
-      <ImageGallery results={results} />
+      <ImageGallery>
+        {results.map(result =>
+          <ImageGalleryItem  key={result.id} src={result.webformatURL} description={result.description} />
+        )}
+      </ImageGallery>
+      {isLoading && <Loader/>}
+      {showLoadMore && <Button type='button' label= 'Load more' />}
+      {/* {showModal && <Modal/>} */}
+
     </>
   );
 }
