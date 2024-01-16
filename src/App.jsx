@@ -10,10 +10,7 @@ function App() {
   const API_KEY = "40190153-1f7ba2f721d69c0d589a95a2c";
   const [results, setResults] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
-  const [showLoadMore, setShowLoadMore] = useState(false)
-  
-
-  
+  const [showLoadMore, setShowLoadMore] = useState(false);
 
   const fetchData = async function (query) {
     try {
@@ -27,24 +24,25 @@ function App() {
     }
   };
 
-
   const handleSubmit = async (query) => {
     await fetchData(query);
   };
-  
 
   return (
     <>
       <Searchbar onSubmit={handleSubmit} />
       <ImageGallery>
-        {results.map(result =>
-          <ImageGalleryItem  key={result.id} src={result.webformatURL} description={result.description} />
-        )}
+        {results.map((result) => (
+          <ImageGalleryItem
+            key={result.id}
+            src={result.webformatURL}
+            description={result.description}
+          />
+        ))}
       </ImageGallery>
-      {isLoading && <Loader/>}
-      {showLoadMore && <Button type='button' label= 'Load more' />}
+      {isLoading && <Loader />}
+      {showLoadMore && <Button type="button" label="Load more" />}
       {/* {showModal && <Modal/>} */}
-
     </>
   );
 }
