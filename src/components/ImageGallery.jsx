@@ -9,7 +9,7 @@ const ImageGallery = ({ results }) => {
           return (
             <ImageGalleryItem
               key={result.id}
-              webformatURL={result.webformatURL}
+              src={result.webformatURL}
             />
           );
         })}

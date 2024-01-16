@@ -1,9 +1,9 @@
 import React from "react";
 
-const ImageGalleryItem = ({ webformatURL }) => {
+const ImageGalleryItem = ({ src }) => {
   return (
     <li className="gallery-item">
-      <img src={webformatURL} alt="" />
+      <img src={src} alt="" />
     </li>
   );
 };
