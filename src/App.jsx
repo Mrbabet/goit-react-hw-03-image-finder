@@ -6,11 +6,14 @@ import Loader from "./components/Loader";
 import ImageGalleryItem from "./components/ImageGalleryItem";
 import Button from "./components/Button";
 import axios from "axios";
+import Modal from "./components/Modal";
 
 function App() {
   const API_KEY = "40190153-1f7ba2f721d69c0d589a95a2c";
   const [results, setResults] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedImage, setSelectedImage] = useState(null);
   const [showLoadMore, setShowLoadMore] = useState(false);
 
   const fetchData = async function (query, page) {
@@ -26,9 +29,15 @@ function App() {
       console.error("Error fetching data:", error);
     }
   };
-
   const handleSubmit = async (query) => {
     await fetchData(query);
+  };
+  const handleModalOpen = (image) => {
+    setSelectedImage(image);
+    setIsModalOpen(true);
+  };
+  const handleModalClose = () => {
+    setIsModalOpen(false);
   };
 
   return (
@@ -40,6 +49,7 @@ function App() {
         <ImageGallery>
           {results.map((result) => (
             <ImageGalleryItem
+              onClick={() => handleModalOpen(result.largeImageURL)}
               key={result.id}
               src={result.webformatURL}
               description={result.description}
@@ -49,7 +59,13 @@ function App() {
       )}
 
       {showLoadMore && <Button type="button" label="Load more" />}
-      {/* {showModal && <Modal/>} */}
+      {isModalOpen && (
+        <Modal
+          imageURL={selectedImage}
+          isOpen={isModalOpen}
+          onClose={handleModalClose}
+        />
+      )}
     </>
   );
 }
