@@ -14,31 +14,48 @@ function App() {
   const [isLoading, setIsLoading] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedImage, setSelectedImage] = useState(null);
-  const [showLoadMore, setShowLoadMore] = useState(false);
+  const [showLoadMore, setShowLoadMore] = useState(true);
+  const [page, setPage] = useState(1);
 
-  const fetchData = async function (query, page) {
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      if (e.key === "Escape" && isModalOpen) toggleModal();
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+
+    return () => {
+      window.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [isModalOpen]);
+
+  const fetchData = async function (query, page = 1) {
     try {
       setIsLoading(true);
-      const res = await axios.get(
-        `https://pixabay.com/api/?q=${query}&page=${page}&key=${API_KEY}&image_type=photo&orientation=horizontal&per_page=12`
-      );
-
+      const res = await axios.get("https://pixabay.com/api/", {
+        params: {
+          q: query,
+          page: page,
+          key: API_KEY,
+          image_type: "photo",
+          orientation: "horizontal",
+          per_page: 12,
+        },
+      });
       setResults(res.data.hits);
       setIsLoading(false);
     } catch (error) {
       console.error("Error fetching data:", error);
     }
   };
-  const handleSubmit = async (query) => {
-    await fetchData(query);
+  const handleSubmit = async (query, page) => {
+    await fetchData(query, page);
   };
-  const handleModalOpen = (image) => {
+  const toggleModal = (image) => {
     setSelectedImage(image);
-    setIsModalOpen(true);
+    setIsModalOpen(!isModalOpen);
   };
-  const handleModalClose = () => {
-    setIsModalOpen(false);
-  };
+  console.log(page);
 
   return (
     <>
@@ -49,7 +66,7 @@ function App() {
         <ImageGallery>
           {results.map((result) => (
             <ImageGalleryItem
-              onClick={() => handleModalOpen(result.largeImageURL)}
+              onClick={() => toggleModal(result.largeImageURL)}
               key={result.id}
               src={result.webformatURL}
               description={result.description}
@@ -57,13 +74,18 @@ function App() {
           ))}
         </ImageGallery>
       )}
-
-      {showLoadMore && <Button type="button" label="Load more" />}
+      {showLoadMore && (
+        <Button
+          onClick={() => setPage((page) => page + 1)}
+          type="button"
+          label="Load more"
+        />
+      )}
       {isModalOpen && (
         <Modal
           imageURL={selectedImage}
-          isOpen={isModalOpen}
-          onClose={handleModalClose}
+          closeModal={toggleModal}
+          onClick={toggleModal}
         />
       )}
     </>

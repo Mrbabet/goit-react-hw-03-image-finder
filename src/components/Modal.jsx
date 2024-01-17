@@ -1,13 +1,9 @@
 import React from "react";
 
-const Modal = ({ isOpen, onClose, imageURL }) => {
-  if (!isOpen) {
-    console.log("aaa");
-  }
+const Modal = ({ closeModal, imageURL }) => {
   return (
-    <div onClick={onClose} className="overlay">
+    <div onClick={closeModal} className="overlay">
       <div className="modal">
-        <h2>Modal</h2>
         <img src={imageURL} alt="" />
       </div>
     </div>

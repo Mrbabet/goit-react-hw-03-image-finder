@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Blurhash } from "react-blurhash";
 
-const ImageGalleryItem = ({ src, description }) => {
+const ImageGalleryItem = ({ onClick, src, description }) => {
   const [imageLoaded, setImageLoaded] = useState(false);
 
   useEffect(() => {
@@ -14,7 +14,7 @@ const ImageGalleryItem = ({ src, description }) => {
 
   return (
     <>
-      <li className="gallery-item">
+      <li className="gallery-item" onClick={() => onClick(src)}>
         {imageLoaded ? (
           <img loading="lazy" src={src} alt={description} />
         ) : (
