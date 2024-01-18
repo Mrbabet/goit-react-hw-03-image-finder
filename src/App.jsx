@@ -14,22 +14,26 @@ function App() {
   const [isLoading, setIsLoading] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedImage, setSelectedImage] = useState(null);
-  const [showLoadMore, setShowLoadMore] = useState(true);
+  const [showLoadMore, setShowLoadMore] = useState(false);
   const [page, setPage] = useState(1);
+  const [total, setTotal] = useState(0);
+  const [lastSearchQuery, setLastSearchQuery] = useState("");
 
   useEffect(() => {
     const handleKeyDown = (e) => {
       if (e.key === "Escape" && isModalOpen) toggleModal();
     };
-
     window.addEventListener("keydown", handleKeyDown);
-
     return () => {
       window.removeEventListener("keydown", handleKeyDown);
     };
   }, [isModalOpen]);
 
-  const fetchData = async function (query, page = 1) {
+  useEffect(() => {
+    setShowLoadMore(Math.ceil(total / 12) > 1);
+  }, [total, results]);
+
+  const fetchData = async function (query) {
     try {
       setIsLoading(true);
       const res = await axios.get("https://pixabay.com/api/", {
@@ -42,19 +46,29 @@ function App() {
           per_page: 12,
         },
       });
-      setResults(res.data.hits);
       setIsLoading(false);
+      setResults((prevResults) => [...res.data.hits, ...prevResults]);
+      setTotal(Math.ceil(res.data.totalHits / res.config.params.per_page));
     } catch (error) {
       console.error("Error fetching data:", error);
     }
   };
-  const handleSubmit = async (query, page) => {
-    await fetchData(query, page);
+
+  const handleSubmit = async (query) => {
+    setLastSearchQuery(query);
+    setResults([]);
+    await fetchData(query);
   };
   const toggleModal = (image) => {
     setSelectedImage(image);
     setIsModalOpen(!isModalOpen);
   };
+
+  const handleLoadMore = async () => {
+    await fetchData(lastSearchQuery);
+    setPage((prevPage) => prevPage + 1);
+  };
+  console.log(lastSearchQuery);
   console.log(page);
 
   return (
@@ -64,19 +78,21 @@ function App() {
         <Loader />
       ) : (
         <ImageGallery>
-          {results.map((result) => (
-            <ImageGalleryItem
-              onClick={() => toggleModal(result.largeImageURL)}
-              key={result.id}
-              src={result.webformatURL}
-              description={result.description}
-            />
-          ))}
+          {results &&
+            results.map((result) => (
+              <ImageGalleryItem
+                onClick={() => toggleModal(result.largeImageURL)}
+                key={result.id}
+                src={result.webformatURL}
+                description={result.description}
+              />
+            ))}
         </ImageGallery>
       )}
       {showLoadMore && (
         <Button
-          onClick={() => setPage((page) => page + 1)}
+          nextPage={handleLoadMore}
+          className={"load-more"}
           type="button"
           label="Load more"
         />

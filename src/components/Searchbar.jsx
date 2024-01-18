@@ -10,6 +10,11 @@ const Searchbar = ({ onSubmit }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+
+    if (query.trim() === "") {
+      return;
+    }
+
     onSubmit(query);
     setQuery("");
   };
@@ -17,7 +22,7 @@ const Searchbar = ({ onSubmit }) => {
   return (
     <header className="searchbar">
       <form onSubmit={handleSubmit} className="form">
-        <Button type='submit' label ='Search'/>
+        <Button type="submit" label="Search" />
 
         <input
           className="input"
