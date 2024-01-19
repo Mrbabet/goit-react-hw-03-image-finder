@@ -1,4 +1,5 @@
 import React from "react";
+import PropTypes from "prop-types";
 
 const Modal = ({ closeModal, imageURL }) => {
   return (
@@ -11,3 +12,8 @@ const Modal = ({ closeModal, imageURL }) => {
 };
 
 export default Modal;
+
+Modal.PropTypes = {
+  closeModal: PropTypes.func,
+  imageURL: PropTypes.string,
+};

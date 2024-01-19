@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Blurhash } from "react-blurhash";
+import PropTypes from "prop-types";
 
 const ImageGalleryItem = ({ onClick, src, description }) => {
   const [imageLoaded, setImageLoaded] = useState(false);
@@ -31,3 +32,9 @@ const ImageGalleryItem = ({ onClick, src, description }) => {
 };
 
 export default ImageGalleryItem;
+
+ImageGalleryItem.PropTypes = {
+  onClick: PropTypes.func,
+  src: PropTypes.string,
+  description: PropTypes.string,
+};

@@ -1,12 +1,12 @@
 import { useEffect, useState } from "react";
 import "./App.css";
-import Searchbar from "./components/Searchbar";
-import ImageGallery from "./components/ImageGallery";
-import Loader from "./components/Loader";
-import ImageGalleryItem from "./components/ImageGalleryItem";
-import Button from "./components/Button";
+import Searchbar from "./components/Searchbar/Searchbar";
+import ImageGallery from "./components/ImageGallery/ImageGallery";
+import Loader from "./components/Loader/Loader";
+import ImageGalleryItem from "./components/ImageGalleryItem/ImageGalleryItem";
+import Button from "./components/Button/Button";
 import axios from "axios";
-import Modal from "./components/Modal";
+import Modal from "./components/Modal/Modal";
 
 function App() {
   const API_KEY = "40190153-1f7ba2f721d69c0d589a95a2c";
@@ -65,12 +65,9 @@ function App() {
   };
 
   const handleLoadMore = async () => {
-    await fetchData(lastSearchQuery);
     setPage((prevPage) => prevPage + 1);
   };
-  console.log(lastSearchQuery);
   console.log(page);
-
   return (
     <>
       <Searchbar onSubmit={handleSubmit} />

@@ -1,4 +1,5 @@
 import React from "react";
+import PropTypes from "prop-types";
 
 const Button = ({ nextPage, label, type, className }) => {
   return (
@@ -9,3 +10,10 @@ const Button = ({ nextPage, label, type, className }) => {
 };
 
 export default Button;
+
+Button.PropTypes = {
+  nextPage: PropTypes.func,
+  label: PropTypes.string,
+  type: PropTypes.string,
+  className: PropTypes.string,
+};

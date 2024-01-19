@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import Button from "./Button";
-
+import Button from "../Button/Button";
+import PropTypes from "prop-types";
 const Searchbar = ({ onSubmit }) => {
   const [query, setQuery] = useState("");
 
@@ -39,3 +39,7 @@ const Searchbar = ({ onSubmit }) => {
 };
 
 export default Searchbar;
+
+Searchbar.PropTypes = {
+  onSubmit: PropTypes.func,
+};
