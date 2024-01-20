@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Blurhash } from "react-blurhash";
 import PropTypes from "prop-types";
-
+import styles from "./ImageGalleryItem.module.css";
 const ImageGalleryItem = ({ onClick, src, description }) => {
   const [imageLoaded, setImageLoaded] = useState(false);
 
@@ -15,7 +15,7 @@ const ImageGalleryItem = ({ onClick, src, description }) => {
 
   return (
     <>
-      <li className="gallery-item" onClick={() => onClick(src)}>
+      <li className={styles.galleryItem} onClick={() => onClick(src)}>
         {imageLoaded ? (
           <img loading="lazy" src={src} alt={description} />
         ) : (

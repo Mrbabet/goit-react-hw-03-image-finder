@@ -7,6 +7,7 @@ import ImageGalleryItem from "./components/ImageGalleryItem/ImageGalleryItem";
 import Button from "./components/Button/Button";
 import axios from "axios";
 import Modal from "./components/Modal/Modal";
+import styles from "./components/Button/Button.module.css";
 
 function App() {
   const API_KEY = "40190153-1f7ba2f721d69c0d589a95a2c";
@@ -33,7 +34,7 @@ function App() {
     setShowLoadMore(Math.ceil(total / 12) > 1);
   }, [total, results]);
 
-  const fetchData = async function (query) {
+  const fetchData = async function (query, page) {
     try {
       setIsLoading(true);
       const res = await axios.get("https://pixabay.com/api/", {
@@ -58,6 +59,7 @@ function App() {
     setLastSearchQuery(query);
     setResults([]);
     await fetchData(query);
+    setPage(1);
   };
   const toggleModal = (image) => {
     setSelectedImage(image);
@@ -66,8 +68,8 @@ function App() {
 
   const handleLoadMore = async () => {
     setPage((prevPage) => prevPage + 1);
+    fetchData(lastSearchQuery, page + 1);
   };
-  console.log(page);
   return (
     <>
       <Searchbar onSubmit={handleSubmit} />
@@ -89,7 +91,7 @@ function App() {
       {showLoadMore && (
         <Button
           nextPage={handleLoadMore}
-          className={"load-more"}
+          className={styles.loadmore}
           type="button"
           label="Load more"
         />

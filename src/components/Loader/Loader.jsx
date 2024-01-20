@@ -1,10 +1,11 @@
 import React from "react";
+import styles from "./Loader.module.css";
 
 import { Grid } from "react-loader-spinner";
 
 const Loader = () => {
   return (
-    <div className="loader">
+    <div className={styles.loader}>
       <Grid
         height="80"
         width="80"

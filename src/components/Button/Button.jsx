@@ -15,5 +15,4 @@ Button.PropTypes = {
   nextPage: PropTypes.func,
   label: PropTypes.string,
   type: PropTypes.string,
-  className: PropTypes.string,
 };
